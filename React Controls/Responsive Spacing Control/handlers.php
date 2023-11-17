@@ -2,6 +2,43 @@
 /**
  * Padding Control
  */
+
+ if( class_exists( 'WP_Customize_Control' ) ) :
+    class THEME_PREFIX_WP_Spacing_Control extends \WP_Customize_Control {
+      /**
+      * List of controls for this theme
+      * 
+      * @since 1.0.0
+      */
+      protected $type_array = [];
+      public $type = 'spacing';
+      public $tab = 'general';
+
+      /**
+      * Add custom JSON parameters to use in the JS template.
+      * 
+      * @since 1.0.0
+      * @access public
+      * @return void
+      */
+      public function to_json() {
+         parent::to_json();
+         if( $this->tab && $this->type != 'section-tab' ) {
+            $this->json['tab'] = $this->tab;
+         }
+      }
+
+      /**
+       * Override control's content
+       */
+      public function render_content() {
+         ?>
+            <div class="<?php echo esc_attr( $this->type ); ?>" data-setting="<?php if( isset( $this->setting->id ) ) echo esc_attr( $this->setting->id ); ?>"></div>
+         <?php
+      }
+    }
+ endif;
+
 if( ! function_exists( 'THEME_PREFIX_padding_control' ) ) {
     function THEME_PREFIX_padding_control( $wp_customize ) {
         $wp_customize->add_setting( 'stt_padding', [
@@ -20,4 +57,5 @@ if( ! function_exists( 'THEME_PREFIX_padding_control' ) ) {
             ])
         );
     }
+    add_action( 'customize_register', 'THEME_PREFIX_padding_control' );
 }

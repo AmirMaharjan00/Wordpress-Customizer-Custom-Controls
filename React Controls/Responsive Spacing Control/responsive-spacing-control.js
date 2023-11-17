@@ -1,7 +1,7 @@
 const { RangeControl } = wp.components
 const { useState, useEffect } = wp.element;
 
-const BlogcastSpacing = (props) => {
+const THEME_PREFIXSpacing = (props) => {
     const [ inputs, setInputs ] = useState( props.value )
     const [ activeResponsive, setActiveResponsive ] = useState('desktop')
 
