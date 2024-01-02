@@ -66,29 +66,41 @@ const THEME_PREFIXSpacing = (props) => {
                         label="Top"
                         onChange={(newValue) => {handleOnChange( newValue, 'top' )} }
                         value={ inputs[activeResponsive].top }
-                        min={-10000}
-                        max={10000}
+                        min={ customize.settings.controls[props.setting].input_attrs.min }
+                        max={ customize.settings.controls[props.setting].input_attrs.max }
+                        step={ customize.settings.controls[props.setting].input_attrs.step }
+                        resetFallbackValue={props.value}
+                        allowReset = {customize.settings.controls[props.setting].input_attrs.reset}
                     />
                     <RangeControl
                         label="Right"
                         onChange={(newValue) => {handleOnChange( newValue, 'right' )} }
                         value={ inputs[activeResponsive].right }
-                        min={-10000}
-                        max={10000}
+                        min={ customize.settings.controls[props.setting].input_attrs.min }
+                        max={ customize.settings.controls[props.setting].input_attrs.max }
+                        step={ customize.settings.controls[props.setting].input_attrs.step }
+                        resetFallbackValue={props.value}
+                        allowReset = {customize.settings.controls[props.setting].input_attrs.reset}
                     />
                     <RangeControl
                         label="Bottom"
                         onChange={(newValue) => {handleOnChange( newValue, 'bottom' )} }
                         value={ inputs[activeResponsive].bottom }
-                        min={-10000}
-                        max={10000}
+                        min={ customize.settings.controls[props.setting].input_attrs.min }
+                        max={ customize.settings.controls[props.setting].input_attrs.max }
+                        step={ customize.settings.controls[props.setting].input_attrs.step }
+                        resetFallbackValue={props.value}
+                        allowReset = {customize.settings.controls[props.setting].input_attrs.reset}
                     />
                     <RangeControl
                         label="Left"
                         onChange={(newValue) => {handleOnChange( newValue, 'left' )} }
                         value={ inputs[activeResponsive].left }
-                        min={-10000}
-                        max={10000}
+                        min={ customize.settings.controls[props.setting].input_attrs.min }
+                        max={ customize.settings.controls[props.setting].input_attrs.max }
+                        step={ customize.settings.controls[props.setting].input_attrs.step }
+                        resetFallbackValue={props.value}
+                        allowReset = {customize.settings.controls[props.setting].input_attrs.reset}
                     />
                     <div className='link-wrap' onClick={ handleClick } data-side={'link'}><span className='linked'><i className='fas fa-link'></i></span></div>
                 </uL>

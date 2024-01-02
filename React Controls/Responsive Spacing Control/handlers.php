@@ -22,10 +22,9 @@
       * @return void
       */
       public function to_json() {
-         parent::to_json();
-         if( $this->tab && $this->type != 'section-tab' ) {
-            $this->json['tab'] = $this->tab;
-         }
+        parent::to_json();
+        if( $this->tab && $this->type != 'section-tab' ) $this->json['tab'] = $this->tab;
+        if( $this->input_attrs ) $this->json['input_attrs'] = $this->input_attrs;
       }
 
       /**
@@ -53,7 +52,13 @@ if( ! function_exists( 'THEME_PREFIX_padding_control' ) ) {
         $wp_customize->add_control( 
             new THEME_PREFIX_WP_Spacing_Control( $wp_customize, 'stt_padding', [
                 'label' =>  esc_html__( 'Padding', 'THEME_PREFIX' ),
-                'section'   =>  'section_name_goes_here'
+                'section'   =>  'section_name_goes_here',
+                'input_attrs' => array(
+                    'min'   => 0,
+                    'max'   => 50,
+                    'step'  => 1,
+                    'reset' => false
+                )
             ])
         );
     }
