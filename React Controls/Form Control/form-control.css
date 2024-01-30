@@ -1,0 +1,22 @@
+
+.customize-form-control-control .form-fields-elements-wrap,
+.customize-form-control-control .input-type-elements-wrap {
+  background: grey;
+  color: white;
+  padding: 10px;
+  width: 50%;  
+  font-size: 15px;
+  height: 100%;
+}
+
+.customize-form-control-control .form-field-element.input-field .form-field-label {
+  margin-right: 5px;
+}
+
+.customize-form-control-control .form-field-element .has-more-indicator .dashicon:before {
+  font-size: 13px;
+}
+
+.customize-form-control-control .form-fields-wrap {
+  display: flex;
+}
