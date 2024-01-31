@@ -20,13 +20,13 @@
 
     if( ! function_exists( 'newsis_form_control' ) ) :
         function newsis_form_control( $wp_customize ) {
-            // form control
+             // form control
             $wp_customize->add_setting( 'test_form_control', array(
                 'default'   => ''
             ));
             $wp_customize->add_control(
                 new Newsis_WP_Form_Control( $wp_customize, 'test_form_control', array(
-                    'section'   => 'newsis_seo_misc_section',
+                    'section'   => 'blogcast_typography_section',
                     'label'     => esc_html__( 'Form Control', 'newsis' ),
                     'description'   =>  esc_html__( 'Create a form of your choosing', 'newsis' )
                 ))

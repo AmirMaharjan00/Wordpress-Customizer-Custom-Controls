@@ -7,6 +7,7 @@ const NewsisFormControl = ( props ) => {
     const [ isInputTypeAdded, setIsInputTypeAdded ] = useState( false )
     const [ selectedInputType, setSelectedInputType ] = useState({ label: 'Text', slug: 'text' })
     const [ selectedFormField, setSelectedFormField ] = useState({})
+    const [ formItems, setFormItems ] = useState([{ label: 'Text', slug: 'text' }])
     let controlVariables = customize.settings.controls[props.setting]
 
     const inputTypes = [
@@ -45,16 +46,62 @@ const NewsisFormControl = ( props ) => {
     // form field element click handle
     const handleFormFieldClick = ( element, event ) => {
         if( element.slug == 'input-field' ) setIsInputTypeAdded( isInputTypeAdded ? false : true )
+        if( element.slug != 'input-field' ) {
+            setIsNewAdded( false )
+            formItems.push( element )
+            setFormItems( formItems )
+        }
         setSelectedFormField( element )
-        if( element.slug != 'input-field' ) setIsNewAdded( false )
     }
 
     // input type element click handle
     const handleInputTypeClick = ( element, event ) => {
-        console.log( event )
         setSelectedInputType( element )
         setIsInputTypeAdded( isInputTypeAdded ? false : true )
         setIsNewAdded( false )
+        formItems.push( element )
+        setFormItems( formItems )
+    }
+
+    // add new form field click handle
+    const handleAddNewFormFieldClick = () => {
+        setIsNewAdded( isNewAdded ? false : true )
+        setIsInputTypeAdded( false )
+    }
+
+    const formField = ( element ) => {
+        switch( element.slug ) {
+            case 'textarea-field': 
+                return (
+                    <TextareaControl 
+                        label = { element.label }
+                        key = { element.key }
+                    />
+                )
+            break;
+            case 'select-field': 
+                return (
+                    <SelectControl 
+                        label = { element.label }
+                        options = {[
+                            { label: 'Big', value: '100%' },
+                            { label: 'Medium', value: '50%' },
+                            { label: 'Small', value: '25%' }
+                        ]}
+                        key = { element.key }
+                    />
+                )
+            break;
+            default:
+                console.log( element )
+                // <TextControl 
+                //     label = { element.label } 
+                //     help = "Test Description"
+                //     key = { element.key }
+                //     type = { element.slug }
+                // />
+            break;
+        }
     }
 
     return (
@@ -81,15 +128,15 @@ const NewsisFormControl = ( props ) => {
                 <div className='form-creation-area'>
                     <h2 className='form-create-head'>Create Form</h2>
                     <div className='form-fields'>
-                        <TextControl 
-                            label='Test' 
-                            help="Test Description"
-                        />
+                        { formItems.map(( element, index ) => { 
+                            element.key = index
+                            return ( formField( element ) )
+                         }) }
                         <Button
                             className="form-field-add-button"
                             text="Add new form field"
                             variant='secondary'
-                            onClick={() => { setIsNewAdded( isNewAdded ? false : true ) }}
+                            onClick={ handleAddNewFormFieldClick }
                         />
                     </div>
                 </div>
