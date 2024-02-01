@@ -8,7 +8,18 @@ const NewsisFormControl = ( props ) => {
     const [ selectedInputType, setSelectedInputType ] = useState({ label: 'Text', slug: 'text' })
     const [ selectedFormField, setSelectedFormField ] = useState({})
     const [ formItems, setFormItems ] = useState([{ label: 'Text', slug: 'text' }])
+    const [ fieldValues, setFieldValues ] = useState({})
+    const [ fieldValueActive, setFieldValueActive ] = useState( false )
+    const [ actionAttribute, setActionAttribute ] = useState( props.value.action || '' )
+    const [ methodAttribute, setMethodAttribute ] = useState( props.value.method || 'GET' )
     let controlVariables = customize.settings.controls[props.setting]
+
+    useEffect(() => {
+        customize.value( props.setting )({
+            action: actionAttribute,
+            method: methodAttribute
+        })
+    },[actionAttribute, methodAttribute, isNewAdded])
 
     const inputTypes = [
         { label: 'Button', slug: 'button' },
@@ -48,8 +59,7 @@ const NewsisFormControl = ( props ) => {
         if( element.slug == 'input-field' ) setIsInputTypeAdded( isInputTypeAdded ? false : true )
         if( element.slug != 'input-field' ) {
             setIsNewAdded( false )
-            formItems.push( element )
-            setFormItems( formItems )
+            setFormItems([ ...formItems, element ])
         }
         setSelectedFormField( element )
     }
@@ -59,14 +69,15 @@ const NewsisFormControl = ( props ) => {
         setSelectedInputType( element )
         setIsInputTypeAdded( isInputTypeAdded ? false : true )
         setIsNewAdded( false )
-        formItems.push( element )
-        setFormItems( formItems )
+        setFormItems([ ...formItems, element ])
     }
 
     // add new form field click handle
     const handleAddNewFormFieldClick = () => {
         setIsNewAdded( isNewAdded ? false : true )
         setIsInputTypeAdded( false )
+        console.log( actionAttribute )
+        console.log( methodAttribute )
     }
 
     const formField = ( element ) => {
@@ -93,15 +104,45 @@ const NewsisFormControl = ( props ) => {
                 )
             break;
             default:
-                console.log( element )
-                // <TextControl 
-                //     label = { element.label } 
-                //     help = "Test Description"
-                //     key = { element.key }
-                //     type = { element.slug }
-                // />
+                return ( <TextControl 
+                    label = { element.label } 
+                    help = "Test Description"
+                    key = { element.key }
+                    type = { element.slug }
+                /> )
             break;
         }
+    }
+
+    // clone form field handle
+    const handleDuplicateFieldClick = ( element ) => {
+        let insertAt = element.key + 1
+        setFormItems([ ...formItems.slice( 0, insertAt ), { ...element, key: element.key++ }, ...formItems.slice( insertAt ) ])
+    }
+
+    // delete form field handle
+    const handleDeleteFieldClick = ( element ) => {
+        setFormItems( formItems.filter( formItem => formItem.key != element.key ) )
+    }
+
+    // handle field values click
+    const handleFieldValueClick = () => {
+        setFieldValueActive( fieldValueActive ? false : true )
+    }
+
+    // handle field value change
+    const handleFieldValueChange = ( event ) => {
+        let currentValue = event.target.value
+    }
+
+    const FormActions = ({ element }) => {
+        return (
+            <div className='form-field-actions'>
+                <Dashicon icon="welcome-add-page" onClick={() => handleDuplicateFieldClick( element ) }/>
+                <Dashicon icon="trash" onClick={() => handleDeleteFieldClick( element ) }/>
+                <Dashicon icon="admin-generic" onClick = {() => handleFieldValueClick() } />
+            </div>
+        );
     }
 
     return (
@@ -115,29 +156,67 @@ const NewsisFormControl = ( props ) => {
                     <TextControl 
                         label='Action' 
                         help="Specifies where to send the form-data when a form is submitted"
+                        onChange = {( value ) => setActionAttribute( value ) }
+                        value = { actionAttribute }
                     />
                     <RadioControl  
                         label='Method' 
                         help="Specifies the HTTP method to use when sending form-data"
                         options={[
-                            { label: 'GET', value: 'get' },
-                            { label: 'POST', value: 'post' }
+                            { label: 'GET', value: 'GET' },
+                            { label: 'POST', value: 'POST' }
                         ]}
+                        selected = { methodAttribute }
+                        onChange = {( value ) => setMethodAttribute( value ) }
                     />
                 </div>
                 <div className='form-creation-area'>
                     <h2 className='form-create-head'>Create Form</h2>
                     <div className='form-fields'>
-                        { formItems.map(( element, index ) => { 
-                            element.key = index
-                            return ( formField( element ) )
-                         }) }
+                        <div className='form-fields-inner'>
+                            { formItems.map(( element, index ) => { 
+                                element.key = index
+                                return ( 
+                                    <div className='form-field'>
+                                        {formField( element )}
+                                        <FormActions element={ element } />
+                                    </div>
+                                )
+                            }) }
+                        </div>
                         <Button
                             className="form-field-add-button"
                             text="Add new form field"
                             variant='secondary'
                             onClick={ handleAddNewFormFieldClick }
                         />
+                        { fieldValueActive && <div className='field-values-wrap'>
+                            <TextControl
+                                label='Label' 
+                                help="Name of the field"
+                                onChange = { handleFieldValueChange }
+                            />
+                            <TextControl
+                                label='Description'
+                                help="Description of the field"
+                                onChange = { handleFieldValueChange }
+                            />
+                            <TextControl 
+                                label='Value'
+                                help="Value of the field"
+                                onChange = { handleFieldValueChange }
+                            />
+                            <TextControl 
+                                label='Placeholder'
+                                help="Placeholder of the field"
+                                onChange = { handleFieldValueChange }
+                            />
+                            <TextControl
+                                label='Name'
+                                help="Name of the field"
+                                onChange = { handleFieldValueChange }
+                            />
+                        </div> }
                     </div>
                 </div>
                 { isNewAdded && <div className='form-fields-wrap'>
