@@ -1,0 +1,36 @@
+.customize-popup-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .customize-popup-control .field-popup .dashicons.popup-icon {
+    background: blue;
+    padding: 4px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .customize-popup-control .custom-section.is-open {
+    display: block;
+    position: absolute;
+    background: #fff;
+    padding: 20px;
+    top: initial;
+    left: 5px;
+    margin-top: 15px;
+  }
+  
+  .customize-popup-control .custom-section {
+    display: none;
+  }
+  
+  
+  /*  For testing purposes   */
+  .popup-controls.is-open {
+    display: block;
+  }
+  .popup-controls.is-close {
+    display: none;
+  }
